@@ -1,0 +1,81 @@
+<html>
+	<head>
+		<title></title>
+		<link rel="stylesheet" href="login.css">
+	</head>
+	<body>
+	<?php
+	include("db_connect.php");
+	session_start();
+	
+	if(isset($_SESSION['u_id']) AND !empty($_SESSION['u_id']))
+	{	
+		header("location:user_profile.php");
+	}
+	$log="";
+	if(isset($_POST['login']))
+	{
+		 $email=$_POST['email'];
+		 $password=$_POST['passwd'];
+		 $f=0;
+		 
+		 
+		 if(empty($email))
+		 {
+			 $f=1;
+			 $email_err="Please enter your email";
+		 }
+		 else if (!preg_match("/([\w\-]+\.[\w\-]+)/",$email)==1)
+		{
+			$f =1 ;
+			$email_err ="Invalid  email format";
+		}
+		 if(empty($password))
+		 {
+			 $f=1;
+			 $pass_err="please enter your password";
+		 }
+		 
+		if ($f==0)
+		{
+			$sql_check="select * from registration where email='$email' and password='$password'";
+			$result_login = $conn->query($sql_check);
+			$row_count_login=$result_login->num_rows;
+
+			if($row_count_login == 1)
+			{ 
+				$user=$result_login->fetch_assoc();
+				$user_id=$user['id'];
+				//var_dump($user);
+				$log="login success";
+				$_SESSION['u_id']=$user_id;
+				
+				header('location:user_profile.php');
+			}
+			else
+			{
+				$log="login failed";
+			}
+		}
+		//echo $log;
+	}?>
+	<div class="log-form">
+		<h2>Login to your account</h2>
+		<form>
+			<table background ="black" border=0>
+				<tr>
+					<td><input type="text" title="username" placeholder="username" /></td>
+				</tr>
+				<tr><td>&nbsp;</td></tr>
+				<tr>
+					<td><input type="password" title="username" placeholder="password" /></td>
+				</tr>
+				<tr><td>&nbsp;</td></tr>
+				<tr>
+					<td><button type="submit" class="btn">Login</button><font color="white"> New User?</font><a class="forgot" href="#">Register Here</a></td>
+				</tr>
+			</table>
+		</form>
+	</div><!--end log form -->
+	</body>
+</html>

@@ -1,0 +1,5 @@
+ALTER TABLE products
+ADD FOREIGN KEY fk_vendor(vdr_id)
+REFERENCES vendors(vdr_id)
+
+

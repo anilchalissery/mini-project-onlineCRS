@@ -1,0 +1,15 @@
+else if(!preg_match('/^[\p{L}]+$/u',$name))
+					{
+						$f=1;
+						$n_err = "Name must contain letters and spaces only";
+					}
+					
+					accept=".pdf,.jpeg,.jpg,.png"
+					
+					
+					if (ctype_alpha(str_replace(' ', '', $name)) === false) {
+  $errors[] = 'Name must contain letters and spaces only';
+}
+This will strip spaces prior to running the alpha check. If tabs and new lines are an issue you could consider using this instead:
+
+str_replace(array("\n", "\t", ' '), '', $name);
